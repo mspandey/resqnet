@@ -125,9 +125,21 @@ export async function getVolunteers(): Promise<(Profile & Partial<VolunteerProfi
     .eq('role', 'volunteer')
     .order('created_at', { ascending: false });
   if (error) throw new Error(error.message);
-  return (data ?? []).map((row: Record<string, unknown>) => {
-    const vp = (row.volunteer_profiles as VolunteerProfile[] | null)?.[0] ?? {};
-    return { ...row, ...vp };
+  return (data ?? []).map((row: any) => {
+    const vp: Partial<VolunteerProfile> = (row.volunteer_profiles as VolunteerProfile[] | null)?.[0] ?? {};
+    return {
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      phone: row.phone,
+      role: row.role,
+      district: row.district,
+      created_at: row.created_at,
+      skills: vp.skills,
+      availability: vp.availability,
+      certifications: vp.certifications,
+      experience_years: vp.experience_years,
+    } as Profile & Partial<VolunteerProfile>;
   });
 }
 
@@ -140,8 +152,8 @@ export async function getIncidentReports(district?: string): Promise<IncidentRep
   if (district) query = query.eq('district', district);
   const { data, error } = await query;
   if (error) throw new Error(error.message);
-  return (data ?? []).map((row: Record<string, unknown>) => ({
-    ...(row as IncidentReport),
+  return (data ?? []).map((row: any) => ({
+    ...(row as unknown as IncidentReport),
     reporter_name: (row.profiles as { name: string } | null)?.name ?? 'Unknown',
   }));
 }

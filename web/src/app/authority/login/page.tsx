@@ -26,8 +26,6 @@ export default function AuthorityLoginPage() {
         return;
       }
       saveSession({ token: res.access_token, role: res.role as AppRole, user_id: res.user_id });
-      document.cookie = `resqnet_token=${res.access_token}; path=/; SameSite=Lax`;
-      document.cookie = `resqnet_role=${res.role}; path=/; SameSite=Lax`;
       router.push(defaultPathForRole(res.role as AppRole));
     } catch {
       setError('Authority login failed.');

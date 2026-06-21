@@ -20,6 +20,10 @@ export function saveSession(session: AuthSession): void {
   localStorage.setItem(TOKEN_KEY, session.token);
   localStorage.setItem(ROLE_KEY, session.role);
   localStorage.setItem(USER_KEY, session.user_id);
+  if (typeof document !== 'undefined') {
+    document.cookie = `${TOKEN_KEY}=${session.token}; path=/; SameSite=Lax`;
+    document.cookie = `${ROLE_KEY}=${session.role}; path=/; SameSite=Lax`;
+  }
 }
 
 export function getSession(): AuthSession | null {
@@ -35,6 +39,10 @@ export function clearSession(): void {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(ROLE_KEY);
   localStorage.removeItem(USER_KEY);
+  if (typeof document !== 'undefined') {
+    document.cookie = `${TOKEN_KEY}=; path=/; max-age=0; SameSite=Lax`;
+    document.cookie = `${ROLE_KEY}=; path=/; max-age=0; SameSite=Lax`;
+  }
 }
 
 /** Returns the default landing path for a given role. */

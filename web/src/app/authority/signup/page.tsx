@@ -32,8 +32,6 @@ export default function AuthoritySignupPage() {
       });
 
       saveSession({ token: res.access_token, role: res.role as AppRole, user_id: res.user_id });
-      document.cookie = `resqnet_token=${res.access_token}; path=/; SameSite=Lax`;
-      document.cookie = `resqnet_role=${res.role}; path=/; SameSite=Lax`;
       router.push(defaultPathForRole(res.role as AppRole));
     } catch (err) {
       setError((err as Error).message || 'Unable to register authority.');

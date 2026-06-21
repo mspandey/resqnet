@@ -92,7 +92,6 @@ export default function VolunteerSignupPage() {
       // The API gateway automatically creates the volunteer_profiles row.
       // Extended fields (skills, district, availability) can be updated post-registration.
       saveSession({ token: result.access_token, role: result.role as AppRole, user_id: result.user_id });
-      document.cookie = `resqnet_role=volunteer; path=/; SameSite=Lax`;
       router.push(defaultPathForRole('volunteer'));
     } catch (err) {
       setError((err as Error).message || 'Unable to register volunteer.');

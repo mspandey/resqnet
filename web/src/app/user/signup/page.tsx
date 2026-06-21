@@ -46,9 +46,7 @@ export default function UserSignupPage() {
         role: 'citizen',
       });
 
-      // Persist JWT + role so apiFetch() attaches Authorization header automatically
       saveSession({ token: result.access_token, role: result.role as AppRole, user_id: result.user_id });
-      document.cookie = `resqnet_role=citizen; path=/; SameSite=Lax`;
       router.push(defaultPathForRole('citizen'));
     } catch (err) {
       setError((err as Error).message || 'Unable to register. Try again.');

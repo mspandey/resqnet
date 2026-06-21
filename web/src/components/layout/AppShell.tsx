@@ -84,8 +84,6 @@ export function AppShell({ children, role }: Props) {
   function handleLogout() {
     clearSession();
     disconnectSocket();
-    document.cookie = 'resqnet_token=; max-age=0; path=/';
-    document.cookie = 'resqnet_role=; max-age=0; path=/';
     router.push('/login');
   }
 

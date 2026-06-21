@@ -29,7 +29,6 @@ export default function VolunteerLoginPage() {
       }
 
       saveSession({ token: res.access_token, role: res.role as AppRole, user_id: res.user_id });
-      document.cookie = `resqnet_role=${res.role}; path=/; SameSite=Lax`;
       router.push(defaultPathForRole(res.role as AppRole));
     } catch (err) {
       setError((err as Error).message || 'Volunteer login failed. Check your credentials.');

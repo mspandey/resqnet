@@ -19,11 +19,9 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       const res = await login(email, password);
       saveSession({ token: res.access_token, role: res.role as AppRole, user_id: res.user_id });
-      document.cookie = `resqnet_role=${res.role}; path=/; SameSite=Lax`;
       router.push(defaultPathForRole(res.role as AppRole));
     } catch (err) {
       setError((err as Error).message || 'Invalid email or password. Please try again.');
