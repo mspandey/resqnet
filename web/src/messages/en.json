@@ -1,0 +1,84 @@
+{
+  "app": {
+    "name": "ResQNet",
+    "tagline": "AI-Powered Disaster Intelligence"
+  },
+  "auth": {
+    "login": "Log In",
+    "logout": "Log Out",
+    "email": "Email",
+    "password": "Password",
+    "role": "Role",
+    "selectRole": "Select Your Role",
+    "loggingIn": "Logging in…",
+    "invalidCredentials": "Invalid email or password.",
+    "roles": {
+      "volunteer": "Volunteer",
+      "rescue_team": "Rescue Team",
+      "authority": "Government Authority"
+    }
+  },
+  "severity": {
+    "critical": "Critical",
+    "high": "High",
+    "moderate": "Moderate",
+    "low": "Low",
+    "informational": "Informational"
+  },
+  "status": {
+    "reported": "Reported",
+    "verified": "Verified",
+    "dispatched": "Dispatched",
+    "en_route": "En Route",
+    "resolved": "Resolved",
+    "closed": "Closed"
+  },
+  "connectivity": {
+    "online": "Online",
+    "syncing": "Syncing",
+    "offline": "Offline — Queued",
+    "smsFallback": "SMS Fallback Active"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "viewDetails": "View Details",
+    "override": "Override",
+    "noData": "No data available",
+    "kmAway": "{km} km away",
+    "matched": "Matched: {reason}"
+  },
+  "volunteer": {
+    "heatmap": "Incident Heatmap",
+    "tasks": "My Tasks",
+    "history": "Task History",
+    "skills": "My Skills",
+    "acceptTask": "Accept Task",
+    "nearbyIncidents": "Nearby Incidents",
+    "filterBySkill": "Filter by Skill"
+  },
+  "rescue": {
+    "queue": "Dispatch Queue",
+    "acceptIncident": "Accept Incident",
+    "resolveIncident": "Resolve Incident",
+    "route": "View Route",
+    "history": "Dispatch History",
+    "aiScore": "AI Score",
+    "manualOverride": "Manual Override"
+  },
+  "authority": {
+    "dashboard": "Command Dashboard",
+    "district": "District View",
+    "resources": "Resource Allocation",
+    "alerts": "Alerts",
+    "declareAlert": "Declare Alert",
+    "analytics": "Analytics",
+    "incidentCount": "{count} incidents",
+    "resourceUtil": "{pct}% resources deployed"
+  }
+}

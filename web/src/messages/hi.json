@@ -1,0 +1,84 @@
+{
+  "app": {
+    "name": "ResQNet",
+    "tagline": "AI-संचालित आपदा सूचना प्रणाली"
+  },
+  "auth": {
+    "login": "लॉग इन",
+    "logout": "लॉग आउट",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "role": "भूमिका",
+    "selectRole": "अपनी भूमिका चुनें",
+    "loggingIn": "लॉग इन हो रहा है…",
+    "invalidCredentials": "गलत ईमेल या पासवर्ड।",
+    "roles": {
+      "volunteer": "स्वयंसेवक",
+      "rescue_team": "बचाव दल",
+      "authority": "सरकारी प्राधिकरण"
+    }
+  },
+  "severity": {
+    "critical": "अत्यंत गंभीर",
+    "high": "गंभीर",
+    "moderate": "मध्यम",
+    "low": "कम",
+    "informational": "सूचनात्मक"
+  },
+  "status": {
+    "reported": "रिपोर्ट किया गया",
+    "verified": "सत्यापित",
+    "dispatched": "भेजा गया",
+    "en_route": "रास्ते में",
+    "resolved": "हल हो गया",
+    "closed": "बंद"
+  },
+  "connectivity": {
+    "online": "ऑनलाइन",
+    "syncing": "सिंक हो रहा है",
+    "offline": "ऑफ़लाइन — कतार में",
+    "smsFallback": "SMS फ़ॉलबैक सक्रिय"
+  },
+  "common": {
+    "loading": "लोड हो रहा है…",
+    "error": "कुछ गड़बड़ हुई",
+    "retry": "पुनः प्रयास",
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "confirm": "पुष्टि करें",
+    "back": "वापस",
+    "viewDetails": "विवरण देखें",
+    "override": "ओवरराइड",
+    "noData": "कोई डेटा उपलब्ध नहीं",
+    "kmAway": "{km} किमी दूर",
+    "matched": "मिलान: {reason}"
+  },
+  "volunteer": {
+    "heatmap": "घटना हीटमैप",
+    "tasks": "मेरे कार्य",
+    "history": "कार्य इतिहास",
+    "skills": "मेरी कुशलताएँ",
+    "acceptTask": "कार्य स्वीकार करें",
+    "nearbyIncidents": "आसपास की घटनाएँ",
+    "filterBySkill": "कौशल द्वारा फ़िल्टर"
+  },
+  "rescue": {
+    "queue": "प्रेषण कतार",
+    "acceptIncident": "घटना स्वीकार करें",
+    "resolveIncident": "घटना हल करें",
+    "route": "मार्ग देखें",
+    "history": "प्रेषण इतिहास",
+    "aiScore": "AI स्कोर",
+    "manualOverride": "मैन्युअल ओवरराइड"
+  },
+  "authority": {
+    "dashboard": "कमांड डैशबोर्ड",
+    "district": "जिला दृश्य",
+    "resources": "संसाधन आवंटन",
+    "alerts": "अलर्ट",
+    "declareAlert": "अलर्ट घोषित करें",
+    "analytics": "विश्लेषण",
+    "incidentCount": "{count} घटनाएँ",
+    "resourceUtil": "{pct}% संसाधन तैनात"
+  }
+}

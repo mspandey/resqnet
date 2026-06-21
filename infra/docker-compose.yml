@@ -1,0 +1,148 @@
+version: "3.9"
+
+# ── ResQNet local development stack ──────────────────────────────────────────
+# Start with: docker-compose up --build
+# Runs: PostgreSQL (PostGIS + pgvector), Redis, all 5 backend services
+# Web frontend runs separately via: cd web && npm run dev
+
+services:
+
+  # ── Data stores ─────────────────────────────────────────────────────────────
+
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-resqnet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-resqnet}
+      POSTGRES_DB: ${POSTGRES_DB:-resqnet}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+      - ../db/migrations:/migrations:ro
+      - ../db/seed:/seed:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U resqnet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Backend services ─────────────────────────────────────────────────────────
+
+  api-gateway:
+    build:
+      context: ../services/api-gateway
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-resqnet}:${POSTGRES_PASSWORD:-resqnet}@postgres:5432/${POSTGRES_DB:-resqnet}
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-prod}
+      JWT_ALGORITHM: HS256
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      INGESTION_URL: http://ingestion:8001
+      DISPATCH_RESOURCE_URL: http://dispatch-resource:3001
+      NOTIFICATION_URL: http://notification:3002
+      AI_ORCHESTRATION_URL: http://ai-orchestration:8002
+
+  ingestion:
+    build:
+      context: ../services/ingestion
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-resqnet}:${POSTGRES_PASSWORD:-resqnet}@postgres:5432/${POSTGRES_DB:-resqnet}
+      REDIS_URL: redis://redis:6379
+      STORAGE_BASE_URL: ${STORAGE_BASE_URL:-http://localhost:9000}
+      DEDUP_SIMILARITY_THRESHOLD: ${DEDUP_SIMILARITY_THRESHOLD:-0.92}
+
+  ai-orchestration:
+    build:
+      context: ../services/ai-orchestration
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8002:8002"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-resqnet}:${POSTGRES_PASSWORD:-resqnet}@postgres:5432/${POSTGRES_DB:-resqnet}
+      REDIS_URL: redis://redis:6379
+      LLM_PROVIDER: ${LLM_PROVIDER:-groq}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-llama3-70b-8192}
+      MODEL_VERSION: ${MODEL_VERSION:-llama3-70b-8192:resqnet-v1.0}
+
+  dispatch-resource:
+    build:
+      context: ../services/dispatch-resource
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-resqnet}:${POSTGRES_PASSWORD:-resqnet}@postgres:5432/${POSTGRES_DB:-resqnet}
+      REDIS_URL: redis://redis:6379
+      WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
+
+  notification:
+    build:
+      context: ../services/notification
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "3002:3002"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-resqnet}:${POSTGRES_PASSWORD:-resqnet}@postgres:5432/${POSTGRES_DB:-resqnet}
+      REDIS_URL: redis://redis:6379
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_FROM_NUMBER: ${TWILIO_FROM_NUMBER:-}
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-}
+      FIREBASE_CLIENT_EMAIL: ${FIREBASE_CLIENT_EMAIL:-}
+      FIREBASE_PRIVATE_KEY: ${FIREBASE_PRIVATE_KEY:-}
+      INGESTION_SERVICE_URL: http://ingestion:8001/api/reports
+
+volumes:
+  postgres_data:
