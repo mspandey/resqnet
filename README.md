@@ -125,13 +125,7 @@ docker exec -it infra-postgres-1 psql -U resqnet -d resqnet \
 
 ---
 
-## Non-Negotiable Rules (RULES.md)
 
-- **Model version** is logged on every `classifications` row — no exceptions.
-- **Severity overrides** must record `severity_overridden_by` (user UUID) — no anonymous overrides.
-- **Media URLs** are always signed — never raw/public object storage paths.
-- **PII isolation** — `phone`, `email`, `auth_provider_id` never returned to `citizen`/`volunteer` roles.
-- **i18n** — all UI strings must use `next-intl` keys from day 1.
 
 ---
 
