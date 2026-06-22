@@ -112,15 +112,7 @@ docker exec -it infra-postgres-1 psql -U resqnet -d resqnet \
 
 ---
 
-## Key Technical Decisions
 
-| Decision | Choice | Rationale |
-|---|---|---|
-| LLM Classification | Groq (llama3-70b) | <30s latency target; swappable via env |
-| Embeddings | 1536-dim (OpenAI compat) | pgvector IVFFlat dedup at 0.92 cosine similarity |
-| Real-time | Socket.IO + Redis adapter | Multi-instance safe; polling fallback for weak networks |
-| SMS fallback | Twilio | Anonymous reports via `+<phone>` → report forwarded to Ingestion |
-| Media URLs | Signed URLs only | Raw media never served as public URLs (RULES.md §4) |
 
 ---
 
