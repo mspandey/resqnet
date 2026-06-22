@@ -1,8 +1,6 @@
 # ResQNet — AI-Powered Disaster Intelligence Platform
 
-ResQNet is a real-time disaster coordination system that ingests multi-modal emergency reports (text, voice, photo, IoT sensor), classifies them with LLM-powered AI, and dispatches rescue teams through a live command dashboard.
 
----
 
 ## Architecture
 
